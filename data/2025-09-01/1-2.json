@@ -2,13 +2,13 @@
   "date": "2025-09-01",
   "class": "1-2",
   "total": 23,
-  "worn": 0,
-  "rate": 0,
+  "worn": 12,
+  "rate": 52,
   "items": [
     {
       "no": 1,
       "name": "공병호",
-      "worn": false
+      "worn": true
     },
     {
       "no": 2,
@@ -23,12 +23,12 @@
     {
       "no": 4,
       "name": "김하윤",
-      "worn": false
+      "worn": true
     },
     {
       "no": 5,
       "name": "박범국",
-      "worn": false
+      "worn": true
     },
     {
       "no": 6,
@@ -43,7 +43,7 @@
     {
       "no": 8,
       "name": "윤태희",
-      "worn": false
+      "worn": true
     },
     {
       "no": 9,
@@ -53,12 +53,12 @@
     {
       "no": 10,
       "name": "이민주",
-      "worn": false
+      "worn": true
     },
     {
       "no": 11,
       "name": "이윤아",
-      "worn": false
+      "worn": true
     },
     {
       "no": 12,
@@ -73,17 +73,17 @@
     {
       "no": 14,
       "name": "임준우",
-      "worn": false
+      "worn": true
     },
     {
       "no": 15,
       "name": "장서연",
-      "worn": false
+      "worn": true
     },
     {
       "no": 16,
       "name": "장지훈",
-      "worn": false
+      "worn": true
     },
     {
       "no": 17,
@@ -103,12 +103,12 @@
     {
       "no": 20,
       "name": "주솔빈",
-      "worn": false
+      "worn": true
     },
     {
       "no": 21,
       "name": "지수연",
-      "worn": false
+      "worn": true
     },
     {
       "no": 22,
@@ -118,7 +118,7 @@
     {
       "no": 23,
       "name": "한동하",
-      "worn": false
+      "worn": true
     }
   ]
 }
