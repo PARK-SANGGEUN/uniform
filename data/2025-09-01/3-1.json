@@ -2,8 +2,8 @@
   "date": "2025-09-01",
   "class": "3-1",
   "total": 23,
-  "worn": 5,
-  "rate": 22,
+  "worn": 0,
+  "rate": 0,
   "items": [
     {
       "no": 1,
@@ -13,17 +13,17 @@
     {
       "no": 2,
       "name": "김규연",
-      "worn": true
+      "worn": false
     },
     {
       "no": 3,
       "name": "김보훈",
-      "worn": true
+      "worn": false
     },
     {
       "no": 4,
       "name": "김선우",
-      "worn": true
+      "worn": false
     },
     {
       "no": 5,
@@ -33,7 +33,7 @@
     {
       "no": 6,
       "name": "김찬현",
-      "worn": true
+      "worn": false
     },
     {
       "no": 7,
@@ -53,7 +53,7 @@
     {
       "no": 10,
       "name": "박지우",
-      "worn": true
+      "worn": false
     },
     {
       "no": 11,
