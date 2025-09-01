@@ -2,8 +2,8 @@
   "date": "2025-09-01",
   "class": "2-1",
   "total": 21,
-  "worn": 1,
-  "rate": 5,
+  "worn": 3,
+  "rate": 14,
   "items": [
     {
       "no": 1,
@@ -13,12 +13,12 @@
     {
       "no": 2,
       "name": "구승모",
-      "worn": false
+      "worn": true
     },
     {
       "no": 3,
       "name": "김나경",
-      "worn": false
+      "worn": true
     },
     {
       "no": 4,
