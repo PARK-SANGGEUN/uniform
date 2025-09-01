@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>교복 착용 체크 – 버튼형 + 일괄 저장 + 누적 순위 + 번호 편집</title>
+<style>
+  :root{--bg:#f6f8fb;--card:#fff;--text:#0f172a;--muted:#64748b;--brand:#2563eb;--ring:rgba(37,99,235,.18);--shadow:0 10px 24px rgba(15,23,42,.06);--radius:16px}
+  html,body{height:100%} body{margin:0;background:var(--bg);color:var(--text);
+    font-family:ui-sans-serif,system-ui,-apple-system,"Apple SD Gothic Neo","Noto Sans KR",Segoe UI,Roboto,Helvetica,Arial}
+  .container{max-width:1080px;margin:22px auto 60px;padding:0 16px}
+  .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow)}
+  .header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px}
+  .title{font-weight:800;display:flex;gap:10px;align-items:center}
+  .section{padding:14px 16px;border-top:1px solid #eef2f7}
+  .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .seg{display:inline-flex;background:#eef2ff;border-radius:12px;padding:4px}
+  .seg .seg-btn{border:0;background:transparent;padding:7px 12px;border-radius:10px;cursor:pointer;font-weight:800;color:#334155}
+  .seg .seg-btn.active{background:#fff;box-shadow:var(--shadow);color:#1d4ed8}
+  .btn{appearance:none;border:1px solid #e5e7eb;background:#fff;color:#0f172a;padding:8px 12px;border-radius:12px;cursor:pointer;font-weight:700}
+  .btn:hover{transform:translateY(-1px)}
+  .btn.brand{background:var(--brand);border-color:var(--brand);color:#fff}
+  .btn.small{padding:6px 10px;border-radius:10px}
+  .pill{display:inline-flex;gap:8px;align-items:center;background:#f1f5f9;border:1px solid #e5e7eb;padding:6px 10px;border-radius:9999px;font-weight:800;cursor:pointer}
+  input[type="date"],input[type="text"],input[type="number"]{border:1px solid #e5e7eb;border-radius:10px;padding:8px 10px}
+  input:focus{border-color:var(--brand);box-shadow:0 0 0 4px var(--ring);outline:0}
+  .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  @media (min-width:680px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+  .student{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border:1px solid #e5e7eb;border-radius:14px;background:#fff;cursor:pointer}
+  .student .nm{font-weight:800;display:flex;align-items:center;gap:8px}
+  .on{background:#ecfdf5;border-color:#10b981}
+  .off{background:#fff;border-color:#e5e7eb}
+  .muted{color:#64748b}
+  .del{margin-left:8px;background:#fee2e2;border:0;border-radius:8px;padding:2px 6px;cursor:pointer;color:#b91c1c;font-weight:900}
+  .num{width:64px}
+  .divider{height:1px;background:#eef2f7;margin:10px 0}
+  .footer{font-size:13px;color:#64748b}
+  .modal{position:fixed;inset:0;background:rgba(2,6,23,.45);display:none;align-items:center;justify-content:center;padding:18px}
+  .modal.show{display:flex}
+  .modal .box{background:#fff;border-radius:16px;width:100%;max-width:720px;box-shadow:var(--shadow)}
+  .modal .hd{padding:12px 16px;border-bottom:1px solid #eef2f7;display:flex;align-items:center;justify-content:space-between}
+  .modal .bd{padding:12px 16px}
+  .table{width:100%;border-collapse:collapse}
+  .table th,.table td{border-bottom:1px solid #e5e7eb;padding:8px 6px;text-align:left}
+  .table th{background:#f8fafc}
+  .seg-alt{display:inline-flex;background:#f1f5f9;border-radius:12px;padding:4px;margin-right:8px}
+  .seg-alt button{border:0;background:transparent;padding:6px 10px;border-radius:10px;cursor:pointer;font-weight:800}
+  .seg-alt button.active{background:#fff;box-shadow:var(--shadow);color:#1d4ed8}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <div class="header">
+      <div class="title">🧥 교복 착용 체크</div>
+      <div class="row">
+        <button class="btn small" id="btn-print">🖨️ 인쇄</button>
+        <button class="btn small" id="btn-settings">⚙️ 저장소 설정</button>
+        <button class="btn small brand" id="btn-save-github">💾 저장(GitHub)</button>
+        <a class="btn small" href="https://gptonline.ai/ko/" target="_blank" rel="noopener">한국형 GPT</a>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="row">
+        <label>날짜</label><input type="date" id="dateInput">
+        <span class="pill" id="summaryPill" title="누적 순위 보기">총 0명 · ✅ 0</span>
+        <input type="text" id="searchInput" placeholder="학생 이름 검색" style="min-width:180px">
+        <button class="btn small" id="btn-add">학생 추가</button>
+        <button class="btn small" id="btn-edit">편집 모드</button>
+        <button class="btn small" id="btn-save-order" style="display:none">번호 저장</button>
+        <button class="btn small" id="btn-select-all">전체 선택</button>
+        <button class="btn small" id="btn-clear">전체 해제</button>
+        <button class="btn small" id="btn-ranking">🏆 누적 순위</button>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="row" style="justify-content:space-between">
+        <div class="seg" id="seg-grade"></div>
+        <div class="seg" id="seg-class"></div>
+      </div>
+      <div class="divider"></div>
+      <div class="grid" id="grid"></div>
+    </div>
+
+    <div class="section footer">
+      ※ 이 페이지는 <b>누구나 수정 가능</b>합니다(브라우저에서 체크/편집). 저장은 <b>GitHub 저장소</b>에 JSON 파일로 커밋됩니다.
+    </div>
+  </div>
+</div>
+
+<!-- 저장소 설정 모달 -->
+<div class="modal" id="modal">
+  <div class="box">
+    <div class="hd">
+      <strong>GitHub 저장소 설정</strong>
+      <button class="btn small" id="btn-close">닫기</button>
+    </div>
+    <div class="bd">
+      <div class="row" style="gap:10px;margin:6px 0"><label style="min-width:160px">Owner</label><input id="ghOwner" placeholder="your-id" style="flex:1"></div>
+      <div class="row" style="gap:10px;margin:6px 0"><label style="min-width:160px">Repository</label><input id="ghRepo" placeholder="uniform" style="flex:1"></div>
+      <div class="row" style="gap:10px;margin:6px 0"><label style="min-width:160px">Branch</label><input id="ghBranch" value="main" style="flex:1"></div>
+      <div class="row" style="gap:10px;margin:6px 0"><label style="min-width:160px">Base Path</label><input id="ghBase" value="data" style="flex:1"></div>
+      <div class="row" style="gap:10px;margin:6px 0"><label style="min-width:160px">Token</label><input id="ghToken" placeholder="github_pat_... 또는 ghp_..." type="password" style="flex:1"></div>
+      <div class="row" style="margin-top:10px">
+        <button class="btn brand small" id="btn-save-settings">설정 저장</button>
+        <button class="btn small" id="btn-reset-settings">초기화</button>
+        <button class="btn small" id="btn-wipe-local" title="로컬 저장 명단/체크 초기화">로컬 데이터 초기화</button>
+      </div>
+      <div class="muted" style="margin-top:6px">※ fine-grained 토큰에 <code>Contents: Read and write</code> 권한을 권장합니다.</div>
+    </div>
+  </div>
+</div>
+
+<!-- 누적 순위 모달 -->
+<div class="modal" id="rankModal">
+  <div class="box">
+    <div class="hd">
+      <strong>🏆 누적 순위</strong>
+      <button class="btn small" id="btn-close-rank">닫기</button>
+    </div>
+    <div class="bd">
+      <div class="row" style="margin-bottom:8px">
+        <div class="seg-alt" id="scopeSeg">
+          <button data-scope="all" class="active">전체</button>
+          <button data-scope="grade">학년별</button>
+        </div>
+        <div class="seg-alt" id="gradeSeg" style="display:none">
+          <button data-grade="1학년" class="active">1학년</button>
+          <button data-grade="2학년">2학년</button>
+          <button data-grade="3학년">3학년</button>
+        </div>
+        <button class="btn small" id="btn-refresh-rank">GitHub에서 불러오기</button>
+      </div>
+      <table class="table">
+        <thead><tr><th style="width:70px">순위</th><th>학생</th><th style="width:100px">✅ 누적</th></tr></thead>
+        <tbody id="rankBody"></tbody>
+      </table>
+      <div class="muted" id="rankHint" style="margin-top:6px"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ================= 기본 데이터 (2-2 반 포함) ================= */
+const DEFAULT_ROSTERS={
+  "1-1":["고수민","구주영","길선수","김가원","김다함","김수빈","김태석","김태희","김하은","문지민","박선웅","박소영","송건영","윤대원","윤현우","이가빈","이수현","이정민","정지우","정찬용","지의민","황가온"],
+  "1-2":["공병호","길빈나","김영민","김하윤","박범국","신관우","용수빈","윤태희","이나경","이민주","이윤아","이정훈","임서후","임준우","장서연","장지훈","전사명","전상민","조은","주솔빈","지수연","최지유","한동하"],
+  "1-3":["강지호","김민정","김상욱","김용식","김주현","김지환","김효인","박서연","박은빈","박찬준","백성현","신소연","심현률","안예진","안지영","오유준","윤강산","윤세영","윤시후","이수아","정예서","한지민","남궁동환"],
+  "2-1":["고은혜","구승모","김나경","김준호","김채민","김현빈","김희서","도가영","민수연","박예솔","박지홍","송진성","이슬비","이주현","이준혁","이청하","이형진","조민서","조유빈","조은찬","하승호"],
+  "2-2":["김도윤","김은빈","신유찬","신지연","안형준","이경민","이다희","이예린","이용휘","이지연","이지윤","임지후","전서현","정민교","정수민","정한결","주재빈","최연우","최주호","허현호","황채희"],
+  "2-3":["길경림","길나연","길혜미","김가은","김우철","김원호","김지우","김효우","박진엽","손민정","안예원","양희백","오지유","용하은","유온유","유재웅","이유빈","이차윤","정민준","조인섭","최가인","최소영","한지영","현지성"],
+  "3-1":["고경민","김규연","김보훈","김선우","김시은","김찬현","김효정","박영욱","박윤성","박지우","백서현","송정환","이서윤","이서현","이유준","이은비","이은진","이하영","장수민","정재역","조중현","최윤서","최희수"],
+  "3-2":["김단오","김민엽","김유나","김재원","김호연","남대호","박찬현","복선영","손지민","신가원","엄소율","오채현","용현빈","우다연","유수연","이서원","이은우","장서진","장수민","장영민","정시연","정지민","주가영"],
+  "3-3":["강태이","김동연","김동현","김수민","김어진","김종빈","김주환","김준혁","김태하","노단비","민한빛","박시은","박종우","변현정","송재민","이예린","이은서","이해인","이현서","임슬비","장원빈","장지혜","최은진"]
+};
+const GRADES={"1학년":["1","2","3"],"2학년":["1","2","3"],"3학년":["1","2","3"]};
+
+const LS_ROSTERS="uniform_rosters";     // 반별 학생 명단
+const LS_SETTINGS="uniform_gh_settings"; // 저장소 설정
+const LS_CHECKS="uniform_checks";       // 날짜별·반별 체크(오늘 여러 반 일괄 저장용)
+
+/* ================= 상태/초기화 ================= */
+let state={grade:"2학년",cls:"2-2",date:todayStr(),checks:{}};
+
+/* 로컬 명단과 기본 명단 병합(누락 반 자동 추가) */
+const LOADED_RO = load(LS_ROSTERS);
+let ROSTERS = LOADED_RO ? {...DEFAULT_ROSTERS, ...LOADED_RO} : {...DEFAULT_ROSTERS};
+save(LS_ROSTERS, ROSTERS);
+
+let SETTINGS=load(LS_SETTINGS)||{owner:"",repo:"",branch:"main",base:"data",token:""};
+let CHECKS=load(LS_CHECKS)||{};
+
+/* ================= 유틸 ================= */
+function load(k){try{return JSON.parse(localStorage.getItem(k)||"")}catch{return null}}
+function save(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function todayStr(){const d=new Date();return d.toISOString().slice(0,10)}
+function classKey(grade,ban){return `${grade.replace("학년","")}-${ban}`}
+function id(x){return document.getElementById(x)}
+function ghHeaders(scheme="Bearer"){const h={"Accept":"application/vnd.github+json"}; if(SETTINGS.token){h["Authorization"]=(scheme==="token"?"token ":"Bearer ")+SETTINGS.token;} return h;}
+function b64ToUtf8(b64){try{return decodeURIComponent(escape(atob(b64.replace(/\n/g,''))))}catch(e){return atob(b64.replace(/\n/g,''))}}
+
+/* ================= 요소 ================= */
+const segGrade=id("seg-grade"), segClass=id("seg-class"), grid=id("grid");
+const dateInput=id("dateInput"), summaryPill=id("summaryPill");
+const searchInput=id("searchInput"); const btnAdd=id("btn-add"), btnEdit=id("btn-edit"), btnSaveOrder=id("btn-save-order");
+const btnSelectAll=id("btn-select-all"), btnClear=id("btn-clear");
+const btnPrint=id("btn-print"), btnSettings=id("btn-settings"), btnSaveGit=id("btn-save-github");
+const modal=id("modal"), btnClose=id("btn-close"), btnSaveSettings=id("btn-save-settings"), btnResetSettings=id("btn-reset-settings"), btnWipeLocal=id("btn-wipe-local");
+const ghOwner=id("ghOwner"), ghRepo=id("ghRepo"), ghBranch=id("ghBranch"), ghBase=id("ghBase"), ghToken=id("ghToken");
+const rankModal=id("rankModal"), btnCloseRank=id("btn-close-rank"), rankBody=id("rankBody"), rankHint=id("rankHint");
+const scopeSeg=id("scopeSeg"), gradeSeg=id("gradeSeg"), btnRefreshRank=id("btn-refresh-rank");
+
+/* ================= 초기 렌더 ================= */
+dateInput.value=state.date;
+state.checks = getChecks(state.date, state.cls);
+renderGrades(); renderClasses(); renderStudents(); updateSummary();
+
+/* ================= LS_CHECKS 접근자 ================= */
+function getChecks(date, cls){ return (CHECKS[date] && CHECKS[date][cls]) || {}; }
+function setChecks(date, cls, obj){ CHECKS[date]=CHECKS[date]||{}; CHECKS[date][cls]={...obj}; save(LS_CHECKS, CHECKS); }
+
+/* ================= 학년/반/학생 렌더 ================= */
+function renderGrades(){
+  segGrade.innerHTML="";
+  Object.keys(GRADES).forEach(g=>{
+    const b=document.createElement("button");
+    b.className="seg-btn"+(state.grade===g?" active":"");
+    b.textContent=g;
+    b.onclick=()=>{ 
+      setChecks(state.date, state.cls, state.checks);
+      state.grade=g;
+      const bans=GRADES[g]; const curBan=state.cls.split("-")[1];
+      state.cls=classKey(g, bans.includes(curBan)?curBan:bans[0]);
+      state.checks=getChecks(state.date, state.cls);
+      renderGrades(); renderClasses(); renderStudents(); updateSummary();
+    };
+    segGrade.appendChild(b);
+  });
+}
+function renderClasses(){
+  segClass.innerHTML="";
+  (GRADES[state.grade]||[]).forEach(b=>{
+    const key=classKey(state.grade,b);
+    const el=document.createElement("button");
+    el.className="seg-btn"+(state.cls===key?" active":"");
+    el.textContent=`${state.grade.replace("학년","")}-${b}반`;
+    el.onclick=()=>{ 
+      setChecks(state.date, state.cls, state.checks);
+      state.cls=key; state.checks=getChecks(state.date, state.cls);
+      searchInput.value=""; renderClasses(); renderStudents(); updateSummary();
+    };
+    segClass.appendChild(el);
+  });
+}
+function renderStudents(){
+  grid.innerHTML="";
+  const roster=(ROSTERS[state.cls]||[]).slice();
+  const q=searchInput.value.trim();
+  const list=roster.map((name,i)=>({no:i+1,name,on:!!state.checks[name]})).filter(x=>!q || x.name.includes(q));
+
+  list.forEach(({no,name,on})=>{
+    const wrap=document.createElement("div");
+    wrap.className="student "+(on?"on":"off");
+
+    wrap.addEventListener("click",(e)=>{ if(e.target.closest("button, input")) return; state.checks[name]=!state.checks[name]; setChecks(state.date,state.cls,state.checks); renderStudents(); updateSummary(); });
+
+    const left=document.createElement("div");
+    left.className="nm";
+
+    if(btnEdit.dataset.on==="1"){
+      const num=document.createElement("input"); num.type="number"; num.className="num"; num.min="1"; num.value=no; num.dataset.name=name;
+      left.appendChild(num);
+      const nm=document.createElement("span"); nm.textContent=name; left.appendChild(nm);
+
+      const del=document.createElement("button"); del.className="del"; del.textContent="×"; del.title="삭제";
+      del.onclick=(e)=>{ e.stopPropagation(); if(!confirm(`${name} 학생을 삭제할까요?`)) return;
+        const r=ROSTERS[state.cls].slice(); const i=r.indexOf(name); if(i>=0) r.splice(i,1); ROSTERS[state.cls]=r; save(LS_ROSTERS,ROSTERS);
+        delete state.checks[name]; setChecks(state.date,state.cls,state.checks); renderStudents(); updateSummary();
+      };
+      left.appendChild(del);
+    } else {
+      left.innerHTML=`<span class="muted" style="margin-right:8px">${no}번</span>${name}`;
+    }
+
+    wrap.appendChild(left);
+    const right=document.createElement("div"); right.textContent = on? "✅":"❌"; wrap.appendChild(right);
+    grid.appendChild(wrap);
+  });
+
+  btnSaveOrder.style.display = btnEdit.dataset.on==="1" ? "inline-block" : "none";
+}
+function updateSummary(){
+  const roster=ROSTERS[state.cls]||[]; const onCount=Object.entries(state.checks).filter(([k,v])=>v && roster.includes(k)).length;
+  summaryPill.textContent=`총 ${roster.length}명 · ✅ ${onCount}`;
+}
+
+/* ================= 상단 이벤트 ================= */
+btnPrint.onclick=()=>window.print();
+dateInput.onchange=()=>{ 
+  setChecks(state.date, state.cls, state.checks);
+  state.date=dateInput.value; 
+  state.checks=getChecks(state.date, state.cls);
+  renderStudents(); updateSummary(); 
+};
+searchInput.oninput=()=>renderStudents();
+btnAdd.onclick=()=>{ const name=(searchInput.value||"").trim(); if(!name) return alert("추가할 학생 이름을 입력하세요."); const r=ROSTERS[state.cls]||[]; if(r.includes(name)) return alert("이미 명단에 있습니다."); r.push(name); ROSTERS[state.cls]=r; save(LS_ROSTERS,ROSTERS); state.checks[name]=false; setChecks(state.date,state.cls,state.checks); searchInput.value=""; renderStudents(); updateSummary(); };
+btnEdit.onclick=()=>{ const on=btnEdit.dataset.on==="1"; btnEdit.dataset.on=on?"0":"1"; btnEdit.textContent=on?"편집 모드":"편집 종료"; renderStudents(); };
+btnSaveOrder.onclick=()=>saveNumbers();
+btnSelectAll.onclick=()=>{ (ROSTERS[state.cls]||[]).forEach(n=>state.checks[n]=true); setChecks(state.date,state.cls,state.checks); renderStudents(); updateSummary(); };
+btnClear.onclick=()=>{ state.checks={}; setChecks(state.date,state.cls,state.checks); renderStudents(); updateSummary(); };
+
+/* 번호 저장(재정렬) */
+function saveNumbers(){
+  const inputs=[...document.querySelectorAll('.num')];
+  if(!inputs.length) return;
+  const rows=inputs.map((inp,idx)=>({name: inp.dataset.name, num: parseInt(inp.value||"0",10), oldIndex: idx}));
+  rows.forEach(r=>{ if(!(r.num>0)) r.num=999; });
+  rows.sort((a,b)=> a.num-b.num || a.oldIndex-b.oldIndex);
+  ROSTERS[state.cls]=rows.map(r=>r.name);
+  save(LS_ROSTERS,ROSTERS);
+  renderStudents(); updateSummary();
+  alert("번호가 저장·재정렬되었습니다.");
+}
+
+/* ================= 설정 모달 & 로컬 초기화 ================= */
+btnSettings.onclick=()=>{ ghOwner.value=SETTINGS.owner||""; ghRepo.value=SETTINGS.repo||""; ghBranch.value=SETTINGS.branch||"main"; ghBase.value=SETTINGS.base||"data"; ghToken.value=SETTINGS.token||""; modal.classList.add("show"); };
+btnClose.onclick=()=>modal.classList.remove("show");
+btnSaveSettings.onclick=()=>{ SETTINGS={owner:ghOwner.value.trim(),repo:ghRepo.value.trim(),branch:ghBranch.value.trim()||"main",base:ghBase.value.trim()||"data",token:ghToken.value.trim()}; save(LS_SETTINGS,SETTINGS); modal.classList.remove("show"); alert("설정 저장됨"); };
+btnResetSettings.onclick=()=>{ SETTINGS={owner:"",repo:"",branch:"main",base:"data",token:""}; save(LS_SETTINGS,SETTINGS); ghOwner.value=ghRepo.value=ghToken.value=""; alert("설정 초기화됨"); };
+btnWipeLocal.onclick=()=>{ if(!confirm("로컬 저장된 명단/체크 데이터를 기본값으로 초기화할까요?")) return; localStorage.removeItem(LS_ROSTERS); localStorage.removeItem(LS_CHECKS); state.checks={}; ROSTERS={...DEFAULT_ROSTERS}; save(LS_ROSTERS,ROSTERS); CHECKS={}; save(LS_CHECKS,CHECKS); renderGrades(); renderClasses(); renderStudents(); updateSummary(); alert("로컬 데이터 초기화 완료"); };
+
+/* ================= 저장(안전/빠름): 타임아웃, 재시도, 병렬 ================= */
+// 안전 fetch: 타임아웃 + Bearer→token 재시도
+async function safeFetch(url, opts={}, timeoutMs=25000){
+  let r = await timed(url,{...opts,headers:{...ghHeaders(),...(opts.headers||{})}},timeoutMs).catch(()=>null);
+  if(r && r.status!==401 && r.status!==403) return r;
+  r = await timed(url,{...opts,headers:{...ghHeaders("token"),...(opts.headers||{})}},timeoutMs).catch(()=>null);
+  return r;
+}
+function timed(url, opts, timeoutMs){
+  const c = new AbortController(); const id = setTimeout(()=>c.abort(), timeoutMs);
+  return fetch(url,{...opts,signal:c.signal}).finally(()=>clearTimeout(id));
+}
+async function fetchSha(url, branch){
+  let r = await safeFetch(`${url}?ref=${encodeURIComponent(branch)}`);
+  if(!r) throw new Error("네트워크 오류");
+  if(r.status===200){ const j=await r.json(); return j.sha; }
+  if(r.status===404) return undefined;
+  throw new Error(`sha 조회 실패(${r.status})`);
+}
+async function putFile(url, branch, content, sha){
+  const body = JSON.stringify({message:`Uniform check: ${state.date}`, content, branch, ...(sha?{sha}:{})});
+  let r = await safeFetch(url,{method:"PUT",headers:{"Content-Type":"application/json"},body});
+  if(r && r.status===409){
+    const latest = await fetchSha(url, branch).catch(()=>undefined);
+    r = await safeFetch(url,{method:"PUT",headers:{"Content-Type":"application/json"},body: JSON.stringify({message:`Uniform check: ${state.date}`, content, branch, ...(latest?{sha:latest}:{})})});
+  }
+  return r;
+}
+function buildPayloadFrom(cls, checks){
+  const roster = ROSTERS[cls] || [];
+  const items  = roster.map((n,i)=>({no:i+1,name:n,worn:!!checks[n]}));
+  const worn   = items.filter(x=>x.worn).length;
+  return {date:state.date, class:cls, total:roster.length, worn, rate: roster.length?Math.round(100*worn/roster.length):0, items};
+}
+async function saveOne(cls, checks, onProgress){
+  try{
+    const {owner,repo,branch,base} = SETTINGS;
+    const payload = buildPayloadFrom(cls, checks);
+    const path = `${base}/${payload.date}/${payload.class}.json`;
+    const url  = `https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(path)}`;
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(payload,null,2))));
+    const sha = await fetchSha(url, branch).catch(()=>undefined);
+    const res = await putFile(url, branch, content, sha);
+    if(onProgress) onProgress(cls);
+    if(res && res.ok) return {ok:true};
+    const msg = res ? await res.text() : "네트워크/권한 오류";
+    return {ok:false, msg};
+  }catch(e){
+    if(onProgress) onProgress(cls);
+    return {ok:false, msg: String(e.message||e)};
+  }
+}
+btnSaveGit.onclick = saveToGitHub;
+async function saveToGitHub(){
+  const {owner,repo,branch,base,token}=SETTINGS;
+  if(!owner||!repo||!token){ alert("⚙️ 저장소 설정을 먼저 완료하세요."); return; }
+
+  setChecks(state.date, state.cls, state.checks);
+  const entries = Object.entries(CHECKS[state.date] || {[state.cls]: state.checks});
+  if(entries.length===0){ alert("오늘 체크한 반이 없습니다."); return; }
+
+  const btn = document.getElementById("btn-save-github"); const old=btn.textContent;
+  btn.disabled=true; btn.textContent=`저장 중(0/${entries.length})`;
+
+  let done=0, ok=0, fail=0, errs=[];
+  const CONCURRENCY=4;
+  try{
+    for(let i=0;i<entries.length;i+=CONCURRENCY){
+      const chunk = entries.slice(i,i+CONCURRENCY);
+      const promises = chunk.map(([cls,checks])=>saveOne(cls,checks,()=>{done++; btn.textContent=`저장 중(${done}/${entries.length})`;}));
+      const settled = await Promise.allSettled(promises);
+      settled.forEach((s,idx)=>{
+        const r = s.status==="fulfilled" ? s.value : {ok:false, msg:String(s.reason||"오류")};
+        if(r.ok) ok++; else { fail++; errs.push(`${chunk[idx][0]}: ${r.msg}`); }
+      });
+    }
+  } finally {
+    btn.disabled=false; btn.textContent=old;
+  }
+  alert(`GitHub 저장 완료 · 성공 ${ok}개, 실패 ${fail}개${fail?`\n${errs.join("\n")}`:""}`);
+}
+
+/* ================= 누적 순위(전체/학년별) – GitHub에서 집계 ================= */
+document.getElementById("btn-ranking").onclick=async()=>{ rankBody.innerHTML=""; rankHint.textContent=""; rankModal.classList.add("show"); setScope('all'); await buildRankingFromGitHub('all', null); };
+btnCloseRank.onclick=()=>rankModal.classList.remove("show");
+scopeSeg.addEventListener("click",async(e)=>{ if(e.target.tagName!=="BUTTON") return; [...scopeSeg.children].forEach(b=>b.classList.remove("active")); e.target.classList.add("active"); const sc=e.target.dataset.scope; setScope(sc); const gradeBtn=[...gradeSeg.children].find(b=>b.classList.contains("active")); const grade=gradeBtn?gradeBtn.dataset.grade:null; await buildRankingFromGitHub(sc, sc==='grade'?grade:null); });
+gradeSeg.addEventListener("click",async(e)=>{ if(e.target.tagName!=="BUTTON") return; [...gradeSeg.children].forEach(b=>b.classList.remove("active")); e.target.classList.add("active"); const grade=e.target.dataset.grade; await buildRankingFromGitHub('grade', grade); });
+btnRefreshRank.onclick = async () => {
+  const activeScope = [...scopeSeg.querySelectorAll('button')].find(b => b.classList.contains('active'))?.dataset.scope || 'all';
+  const activeGrade = [...gradeSeg.querySelectorAll('button')].find(b => b.classList.contains('active'))?.dataset.grade || null;
+  await buildRankingFromGitHub(activeScope, activeScope === 'grade' ? activeGrade : null);
+};
+function setScope(sc){ gradeSeg.style.display = (sc==="grade") ? "inline-flex" : "none"; }
+
+async function getBranchSHA(owner, repo, branch) {
+  let b = await fetch(`https://api.github.com/repos/${owner}/${repo}/branches/${encodeURIComponent(branch)}`, { headers: ghHeaders() });
+  if (b.status === 403) b = await fetch(`https://api.github.com/repos/${owner}/${repo}/branches/${encodeURIComponent(branch)}`, { headers: ghHeaders("token") });
+  if (!b.ok) throw new Error("브랜치 조회 실패");
+  const js = await b.json();
+  if (!js?.commit?.sha) throw new Error("브랜치 SHA 없음");
+  return js.commit.sha;
+}
+async function buildRankingFromGitHub(scope, grade){
+  const {owner,repo,branch,base}=SETTINGS;
+  if(!owner||!repo){ rankHint.textContent="⚙️ 저장소 설정 후 이용하세요."; return; }
+  rankBody.innerHTML=""; rankHint.textContent="집계 중...";
+  try{
+    const sha = await getBranchSHA(owner,repo,branch||"main");
+    let t = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/trees/${sha}?recursive=1`, { headers: ghHeaders() });
+    if (t.status === 403) t = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/trees/${sha}?recursive=1`, { headers: ghHeaders("token") });
+    if(!t.ok) throw new Error("파일 트리 조회 실패");
+    const list=(await t.json()).tree||[];
+    const prefix=`${base||"data"}/`;
+    const blobs=list.filter(n=>n.type==="blob" && n.path.startsWith(prefix) && n.path.endsWith(".json"));
+
+    const counts={}; // key: "학년-반|이름"
+    const inGrade=(cls)=>{ if(!grade) return true; return cls.startsWith(grade.replace("학년","")); };
+
+    for(const n of blobs){
+      let bj=await fetch(`https://api.github.com/repos/${owner}/${repo}/git/blobs/${n.sha}`,{headers:ghHeaders()});
+      if(bj.status===403) bj=await fetch(`https://api.github.com/repos/${owner}/${repo}/git/blobs/${n.sha}`,{headers:ghHeaders("token")});
+      if(!bj.ok) continue;
+      const blob=await bj.json().catch(()=>null);
+      if(!blob || !blob.content) continue;
+      const txt=b64ToUtf8(blob.content);
+      let j=null; try{ j=JSON.parse(txt); }catch(e){ continue; }
+      if(!j||!j.items||!j.class) continue;
+      if(scope==="grade" && !inGrade(j.class)) continue;
+      const cls=j.class; j.items.forEach(it=>{ if(it.worn){ const key=`${cls}|${it.name}`; counts[key]=(counts[key]||0)+1; }});
+    }
+    const arr=Object.entries(counts).map(([key,c])=>{ const [cls,name]=key.split("|"); return {cls,name,count:c}; });
+    arr.sort((a,b)=> b.count-a.count || a.cls.localeCompare(b.cls,"ko") || a.name.localeCompare(b.name,"ko"));
+    let rank=0, prev=null; arr.forEach((r,i)=>{ if(prev===null || r.count<prev){ rank=i+1; prev=r.count;} r.rank=rank; });
+    rankBody.innerHTML=""; arr.forEach(r=>{ const tr=document.createElement("tr"); tr.innerHTML=`<td>${r.rank}</td><td><span class="muted">${r.cls}</span> ${r.name}</td><td>${r.count}</td>`; rankBody.appendChild(tr); });
+    rankHint.textContent = arr.length ? `총 ${arr.length}명 집계됨 · 범위: ${scope==="all"?"전체":grade}` : "저장된 데이터가 없습니다. 먼저 💾 저장(GitHub)을 눌러 기록을 만드세요.";
+  }catch(e){ rankHint.textContent="집계 실패: "+e.message; }
+}
+</script>
+</body>
+</html>
