@@ -2,8 +2,8 @@
   "date": "2025-09-01",
   "class": "3-2",
   "total": 23,
-  "worn": 0,
-  "rate": 0,
+  "worn": 2,
+  "rate": 9,
   "items": [
     {
       "no": 1,
@@ -53,7 +53,7 @@
     {
       "no": 10,
       "name": "신가원",
-      "worn": false
+      "worn": true
     },
     {
       "no": 11,
@@ -73,7 +73,7 @@
     {
       "no": 14,
       "name": "우다연",
-      "worn": false
+      "worn": true
     },
     {
       "no": 15,
