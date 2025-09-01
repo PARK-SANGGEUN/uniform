@@ -2,8 +2,8 @@
   "date": "2025-09-01",
   "class": "1-1",
   "total": 22,
-  "worn": 0,
-  "rate": 0,
+  "worn": 7,
+  "rate": 32,
   "items": [
     {
       "no": 1,
@@ -13,7 +13,7 @@
     {
       "no": 2,
       "name": "구주영",
-      "worn": false
+      "worn": true
     },
     {
       "no": 3,
@@ -23,7 +23,7 @@
     {
       "no": 4,
       "name": "김가원",
-      "worn": false
+      "worn": true
     },
     {
       "no": 5,
@@ -43,12 +43,12 @@
     {
       "no": 8,
       "name": "김태희",
-      "worn": false
+      "worn": true
     },
     {
       "no": 9,
       "name": "김하은",
-      "worn": false
+      "worn": true
     },
     {
       "no": 10,
@@ -63,12 +63,12 @@
     {
       "no": 12,
       "name": "박소영",
-      "worn": false
+      "worn": true
     },
     {
       "no": 13,
       "name": "송건영",
-      "worn": false
+      "worn": true
     },
     {
       "no": 14,
@@ -88,7 +88,7 @@
     {
       "no": 17,
       "name": "이수현",
-      "worn": false
+      "worn": true
     },
     {
       "no": 18,
