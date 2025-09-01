@@ -2,8 +2,8 @@
   "date": "2025-09-01",
   "class": "3-1",
   "total": 23,
-  "worn": 3,
-  "rate": 13,
+  "worn": 5,
+  "rate": 22,
   "items": [
     {
       "no": 1,
@@ -33,7 +33,7 @@
     {
       "no": 6,
       "name": "김찬현",
-      "worn": false
+      "worn": true
     },
     {
       "no": 7,
@@ -53,7 +53,7 @@
     {
       "no": 10,
       "name": "박지우",
-      "worn": false
+      "worn": true
     },
     {
       "no": 11,
