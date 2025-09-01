@@ -2,8 +2,8 @@
   "date": "2025-09-01",
   "class": "2-2",
   "total": 21,
-  "worn": 0,
-  "rate": 0,
+  "worn": 6,
+  "rate": 29,
   "items": [
     {
       "no": 1,
@@ -13,12 +13,12 @@
     {
       "no": 2,
       "name": "김은빈",
-      "worn": false
+      "worn": true
     },
     {
       "no": 3,
       "name": "신유찬",
-      "worn": false
+      "worn": true
     },
     {
       "no": 4,
@@ -43,7 +43,7 @@
     {
       "no": 8,
       "name": "이예린",
-      "worn": false
+      "worn": true
     },
     {
       "no": 9,
@@ -53,7 +53,7 @@
     {
       "no": 10,
       "name": "이지연",
-      "worn": false
+      "worn": true
     },
     {
       "no": 11,
@@ -63,7 +63,7 @@
     {
       "no": 12,
       "name": "임지후",
-      "worn": false
+      "worn": true
     },
     {
       "no": 13,
@@ -88,7 +88,7 @@
     {
       "no": 17,
       "name": "주재빈",
-      "worn": false
+      "worn": true
     },
     {
       "no": 18,
