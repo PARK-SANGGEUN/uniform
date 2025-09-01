@@ -2,8 +2,8 @@
   "date": "2025-09-01",
   "class": "1-2",
   "total": 23,
-  "worn": 0,
-  "rate": 0,
+  "worn": 1,
+  "rate": 4,
   "items": [
     {
       "no": 1,
@@ -13,7 +13,7 @@
     {
       "no": 2,
       "name": "길빈나",
-      "worn": false
+      "worn": true
     },
     {
       "no": 3,
