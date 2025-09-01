@@ -2,8 +2,8 @@
   "date": "2025-09-01",
   "class": "3-3",
   "total": 23,
-  "worn": 2,
-  "rate": 9,
+  "worn": 0,
+  "rate": 0,
   "items": [
     {
       "no": 1,
@@ -23,7 +23,7 @@
     {
       "no": 4,
       "name": "김수민",
-      "worn": true
+      "worn": false
     },
     {
       "no": 5,
@@ -43,7 +43,7 @@
     {
       "no": 8,
       "name": "김준혁",
-      "worn": true
+      "worn": false
     },
     {
       "no": 9,
