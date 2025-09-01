@@ -2,8 +2,8 @@
   "date": "2025-09-01",
   "class": "2-2",
   "total": 21,
-  "worn": 1,
-  "rate": 5,
+  "worn": 0,
+  "rate": 0,
   "items": [
     {
       "no": 1,
@@ -18,7 +18,7 @@
     {
       "no": 3,
       "name": "신유찬",
-      "worn": true
+      "worn": false
     },
     {
       "no": 4,
