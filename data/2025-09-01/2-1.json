@@ -2,18 +2,18 @@
   "date": "2025-09-01",
   "class": "2-1",
   "total": 21,
-  "worn": 0,
-  "rate": 0,
+  "worn": 4,
+  "rate": 19,
   "items": [
     {
       "no": 1,
       "name": "고은혜",
-      "worn": false
+      "worn": true
     },
     {
       "no": 2,
       "name": "구승모",
-      "worn": false
+      "worn": true
     },
     {
       "no": 3,
@@ -48,7 +48,7 @@
     {
       "no": 9,
       "name": "민수연",
-      "worn": false
+      "worn": true
     },
     {
       "no": 10,
@@ -58,7 +58,7 @@
     {
       "no": 11,
       "name": "박지홍",
-      "worn": false
+      "worn": true
     },
     {
       "no": 12,
