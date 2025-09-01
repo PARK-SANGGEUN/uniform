@@ -2,8 +2,8 @@
   "date": "2025-09-10",
   "class": "1-1",
   "total": 22,
-  "worn": 1,
-  "rate": 5,
+  "worn": 2,
+  "rate": 9,
   "items": [
     {
       "no": 1,
@@ -33,7 +33,7 @@
     {
       "no": 6,
       "name": "김수빈",
-      "worn": false
+      "worn": true
     },
     {
       "no": 7,
