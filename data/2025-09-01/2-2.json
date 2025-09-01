@@ -2,18 +2,18 @@
   "date": "2025-09-01",
   "class": "2-2",
   "total": 21,
-  "worn": 2,
-  "rate": 10,
+  "worn": 0,
+  "rate": 0,
   "items": [
     {
       "no": 1,
       "name": "김도윤",
-      "worn": true
+      "worn": false
     },
     {
       "no": 2,
       "name": "김은빈",
-      "worn": true
+      "worn": false
     },
     {
       "no": 3,
