@@ -2,8 +2,8 @@
   "date": "2025-09-01",
   "class": "3-1",
   "total": 23,
-  "worn": 2,
-  "rate": 9,
+  "worn": 3,
+  "rate": 13,
   "items": [
     {
       "no": 1,
@@ -23,7 +23,7 @@
     {
       "no": 4,
       "name": "김선우",
-      "worn": false
+      "worn": true
     },
     {
       "no": 5,
