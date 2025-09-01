@@ -1,0 +1,119 @@
+{
+  "date": "2025-09-02",
+  "class": "1-1",
+  "total": 22,
+  "worn": 1,
+  "rate": 5,
+  "items": [
+    {
+      "no": 1,
+      "name": "고수민",
+      "worn": true
+    },
+    {
+      "no": 2,
+      "name": "구주영",
+      "worn": false
+    },
+    {
+      "no": 3,
+      "name": "길선수",
+      "worn": false
+    },
+    {
+      "no": 4,
+      "name": "김가원",
+      "worn": false
+    },
+    {
+      "no": 5,
+      "name": "김다함",
+      "worn": false
+    },
+    {
+      "no": 6,
+      "name": "김수빈",
+      "worn": false
+    },
+    {
+      "no": 7,
+      "name": "김태석",
+      "worn": false
+    },
+    {
+      "no": 8,
+      "name": "김태희",
+      "worn": false
+    },
+    {
+      "no": 9,
+      "name": "김하은",
+      "worn": false
+    },
+    {
+      "no": 10,
+      "name": "문지민",
+      "worn": false
+    },
+    {
+      "no": 11,
+      "name": "박선웅",
+      "worn": false
+    },
+    {
+      "no": 12,
+      "name": "박소영",
+      "worn": false
+    },
+    {
+      "no": 13,
+      "name": "송건영",
+      "worn": false
+    },
+    {
+      "no": 14,
+      "name": "윤대원",
+      "worn": false
+    },
+    {
+      "no": 15,
+      "name": "윤현우",
+      "worn": false
+    },
+    {
+      "no": 16,
+      "name": "이가빈",
+      "worn": false
+    },
+    {
+      "no": 17,
+      "name": "이수현",
+      "worn": false
+    },
+    {
+      "no": 18,
+      "name": "이정민",
+      "worn": false
+    },
+    {
+      "no": 19,
+      "name": "정지우",
+      "worn": false
+    },
+    {
+      "no": 20,
+      "name": "정찬용",
+      "worn": false
+    },
+    {
+      "no": 21,
+      "name": "지의민",
+      "worn": false
+    },
+    {
+      "no": 22,
+      "name": "황가온",
+      "worn": false
+    }
+  ]
+}
