@@ -2,13 +2,13 @@
   "date": "2025-09-02",
   "class": "2-2",
   "total": 21,
-  "worn": 4,
-  "rate": 19,
+  "worn": 0,
+  "rate": 0,
   "items": [
     {
       "no": 1,
       "name": "김도윤",
-      "worn": true
+      "worn": false
     },
     {
       "no": 2,
@@ -18,7 +18,7 @@
     {
       "no": 3,
       "name": "신유찬",
-      "worn": true
+      "worn": false
     },
     {
       "no": 4,
@@ -28,7 +28,7 @@
     {
       "no": 5,
       "name": "안형준",
-      "worn": true
+      "worn": false
     },
     {
       "no": 6,
@@ -38,7 +38,7 @@
     {
       "no": 7,
       "name": "이다희",
-      "worn": true
+      "worn": false
     },
     {
       "no": 8,
